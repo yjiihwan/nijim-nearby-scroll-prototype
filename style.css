@@ -21,7 +21,31 @@ body.phone #status{display:none}
 .view[hidden]{display:none}
 .scroller{position:absolute;left:0;right:0;top:0;bottom:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:none;scrollbar-width:none;touch-action:pan-y}
 .scroller::-webkit-scrollbar{display:none}
-.list img{width:393px}
+/* 센터 카드(HTML 구성 — 캡처 카드 수치 기준, pt) */
+.cardWrap{height:345px;padding:10px 6px}
+.card{position:relative;height:325px;background:#fff;border-radius:14px;box-shadow:0 0 10px rgba(0,0,0,.08);padding:9px}
+.card .ph{display:flex;gap:1px;height:182px;border-radius:10px;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .ph .m{flex:0 0 278.7px}
+.card .ph .s{flex:1;display:flex;flex-direction:column;gap:1px}
+.card .ph .s img{height:auto;flex:1;min-height:0}
+.card .band{position:absolute;left:14px;right:14px;top:180px;height:24.3px;border-radius:12.2px;background:linear-gradient(90deg,#FE0087,#FF0054);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:-.2px}
+.card .band svg{display:block}
+.card .band .plus{margin:0 3px}
+.card .r1{position:absolute;left:9px;right:9px;top:208px;height:20px;display:flex;align-items:center}
+.card .nm{font-size:13.5px;font-weight:600;color:#111;letter-spacing:-.3px}
+.card .lk{display:flex;align-items:center;gap:4px;margin-left:8px;font-size:13.5px;font-weight:500;color:#111}
+.card .dist{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:500;color:#111}
+.card .ct{position:absolute;left:9px;top:232px;font-size:13px;font-weight:400;color:#EE3A78;letter-spacing:-.2px}
+.card .pr{position:absolute;left:9px;right:9px;top:255px;height:24px;display:flex}
+.card .pr>div{flex:0 0 181.7px;display:flex;align-items:baseline;white-space:nowrap}
+.card .pr .k{font-size:13px;font-weight:400;color:#222;margin-right:6px}
+.card .pr b{font-size:16px;font-weight:700;color:#111;letter-spacing:-.2px}
+.card .pr .w{font-size:13px;font-weight:400;color:#222;margin:0 5px 0 2px}
+.card .pr s{font-size:12.5px;color:#9A9A9A}
+.card .ev{position:absolute;left:9px;right:9px;top:287.3px;height:28px;border-radius:6px;background:#F5F3F4;display:flex;align-items:center;padding-left:8px;font-size:13px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;letter-spacing:-.2px}
+.card .ev em{font-style:normal;font-weight:600;color:#EE3A78;margin-right:5px}
+.card .ev i{width:0;height:0;border-left:6px solid #EE3A78;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;margin-right:8px}
 .list{will-change:transform;transition:opacity .15s}
 .list.refresh{opacity:.25;transition:none}
 
@@ -45,7 +69,8 @@ body.phone #status{display:none}
 #bar{position:absolute;left:0;top:54px;width:393px;height:44px;background:#fff;opacity:0;pointer-events:none}
 #bar.on{pointer-events:auto}
 #mapBtn{position:absolute;left:12px;top:7px;width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid #D7D7DC;display:flex;align-items:center;justify-content:center}
-#mapBtn img{width:14px;height:14px}
+/* 화살표: 글리프 bbox를 원 중심에 맞춘 뒤, 무게중심(오른쪽 위로 쏠림)만큼 광학 보정 */
+#mapBtn svg{display:block;width:14px;height:14.8px;transform:translate(-.7px,.3px)}
 #cats{position:absolute;left:48px;top:8px;height:28px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;touch-action:pan-x;
   -webkit-mask-image:linear-gradient(to left,transparent 0,#000 12px);mask-image:linear-gradient(to left,transparent 0,#000 12px)}
 #cats::-webkit-scrollbar{display:none}

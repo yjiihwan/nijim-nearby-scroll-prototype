@@ -11,11 +11,11 @@ const D = S.delta, LIST0 = S.sheetTop0 + S.headerExpandedH;           // 221
 const LIST1 = S.statusH + S.barH + S.adH;                              // 120
 const FRAME_H = 852;
 
-const CARDS = [ // [이미지, 높이pt, AD 섹션 여부] — 캡처 픽셀 카드 반복(더미)
-  ['card_core.jpg', 745 / 3, true], ['card_value.jpg', 1036 / 3, true], ['card_core.jpg', 745 / 3, true],
-  ['card_value.jpg', 1036 / 3, false], ['card_core.jpg', 745 / 3, false], ['card_value.jpg', 1036 / 3, false],
-  ['card_core.jpg', 745 / 3, false], ['card_value.jpg', 1036 / 3, false],
-];
+// 센터 카드: HTML로 구성(캡처 이미지 잘림 제거). 같은 카드 데이터 반복(더미, 형 허락) — 앞 3장이 AD 섹션
+const CARD_H = 345; // 카드 325 + 위아래 간격 20
+const CARD = { name: '밸류온피트니스', like: 85, dist: '0.8km', cat: '헬스|PT|G.T|G.X', day: ['9,900', '20,000'], month: ['43,300', '51,700'],
+  sale: '11:21:28', ev: '헬스 구독 멤버십, PT 구독 멤버십 출시 기념 이벤트!' };
+const CARDS = [true, true, true, false, false, false, false, false].map(ad => [CARD, CARD_H, ad]);
 const AD_SECTION_H = CARDS.filter(c => c[2]).reduce((a, c) => a + c[1], 0);
 const LIST_H = CARDS.reduce((a, c) => a + c[1], 0);
 const CATS = ['전체', '헬스', 'PT', '필라테스', '요가', '수영'];
@@ -57,8 +57,22 @@ function layout() {
   if (mode === 'new') render();
 }
 
+const ICON = {
+  sub: '<svg width="17" height="13" viewBox="0 0 20 15"><rect width="20" height="15" rx="3.5" fill="#fff"/><path d="M6.6 4.9c-1.5 0-2.6 1.1-2.6 2.6s1.1 2.6 2.6 2.6c1.5 0 2.3-1.3 3.4-2.6 1.1-1.3 1.9-2.6 3.4-2.6 1.5 0 2.6 1.1 2.6 2.6s-1.1 2.6-2.6 2.6c-1.5 0-2.3-1.3-3.4-2.6S8.1 4.9 6.6 4.9z" fill="none" stroke="#FE0A70" stroke-width="1.9"/></svg>',
+  clock: '<svg width="15" height="15" viewBox="0 0 17 17" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="9.3" r="6"/><path d="M8.5 6.3v3.2l2 1.4M2.2 3.6 4.4 1.7M14.8 3.6l-2.2-1.9"/></svg>',
+  heart: '<svg width="13" height="11.4" viewBox="0 0 24 21"><path d="M12 21 2.6 11.6A6 6 0 0 1 11.1 3.1L12 4l.9-.9a6 6 0 0 1 8.5 8.5z" fill="#F2316B"/></svg>',
+  dist: '<svg width="13" height="13" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#E4E4E6"/><path d="M4 8h8M5.8 6.2 4 8l1.8 1.8M10.2 6.2 12 8l-1.8 1.8" fill="none" stroke="#9A9A9F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+const cardHTML = c => `<div class="cardWrap"><div class="card">
+  <div class="ph"><img class="m" src="assets/photo_main.jpg" alt="" draggable="false"><div class="s"><img src="assets/photo_sub1.jpg" alt="" draggable="false"><img src="assets/photo_sub2.jpg" alt="" draggable="false"></div></div>
+  <div class="band">${ICON.sub}<span>구독멤버십</span><span class="plus">+</span>${ICON.clock}<span>타임세일 ${c.sale}</span></div>
+  <div class="r1"><span class="nm">${c.name}</span><span class="lk">${ICON.heart}${c.like}</span><span class="dist">${ICON.dist}${c.dist}</span></div>
+  <div class="ct">${c.cat}</div>
+  <div class="pr"><div><span class="k">하루</span><b>${c.day[0]}</b><span class="w">원</span><s>${c.day[1]}원</s></div><div><span class="k">한달</span><b>${c.month[0]}</b><span class="w">원</span><s>${c.month[1]}원</s></div></div>
+  <div class="ev"><em>이벤트</em><i></i>${c.ev}</div>
+</div></div>`;
 function buildList(node) {
-  node.innerHTML = CARDS.map(([src, h]) => `<img src="assets/${src}" style="height:${h}px" alt="" draggable="false">`).join('');
+  node.innerHTML = CARDS.map(([c]) => cardHTML(c)).join('');
 }
 buildList(el.list); buildList(el.curList);
 
