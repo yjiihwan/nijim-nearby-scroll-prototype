@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>니짐내짐 내주변 스크롤 UI 프로토타입</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="page">
+  <aside id="guide">
+    <h1>니짐내짐 「내주변」<br>스크롤 UI 프로토타입</h1>
+    <p class="sub">더미 데이터 · 형 확정안 A+C · SPEC v1 수치 그대로</p>
+    <ol>
+      <li>화면 위 <b>현행 / 개선안</b> 버튼으로 두 방식을 바꿔 봅니다.</li>
+      <li>리스트를 <b>위로 밀면</b> 지도가 사라지며 리스트가 화면 위까지 올라옵니다.</li>
+      <li>접힌 상태에서 맨 위로 올라간 뒤 <b>한 번 더 아래로 당기면</b>(40pt) 지도가 다시 열립니다. 왼쪽 위 <b>핑크 화살표 동그라미</b>나 아래 <b>지도보기</b>를 눌러도 열립니다.</li>
+      <li>스크롤하는 동안 <b>지도보기·시설/레슨</b> 버튼이 숨고, 멈추면 다시 나옵니다.</li>
+    </ol>
+    <p class="sub">PC: 마우스로 끌거나 휠로 스크롤 · 폰: 손가락 그대로</p>
+  </aside>
+  <div id="frame">
+    <div id="stage">
+      <!-- 개선안 -->
+      <section id="vNew" class="view">
+        <div id="scroller" class="scroller">
+          <div id="spacer"></div>
+          <div id="list" class="list"></div>
+          <div id="tailpad"></div>
+        </div>
+        <div id="topCover"><img id="mapImg" src="assets/map.jpg" alt="" draggable="false"></div>
+        <div id="mapBlock"></div>
+        <div id="exHeader">
+          <img class="handle" src="assets/sheet_handle.png" alt="" draggable="false">
+          <div class="exRow"></div>
+          <img class="sortNear" src="assets/sort_near.png" alt="가까운순" draggable="false">
+          <img class="sortPop" src="assets/sort_pop.png" alt="인기순" draggable="false">
+          <button class="adBtn" data-toast="광고 안내 팝오버(현행과 동일)"><img src="assets/ad_tag.png" alt="AD 안내" draggable="false"></button>
+          <div class="exHair"></div>
+        </div>
+        <div id="adPin"><img src="assets/ad_tag.png" alt="AD" draggable="false"><i></i></div>
+        <div id="bar">
+          <button id="mapBtn" aria-label="지도 보기"><img src="assets/map_arrow_icon.png" alt="" draggable="false"></button>
+          <div id="cats"><div id="catsIn"></div></div>
+          <div id="sorts"></div>
+          <div id="barHair"></div>
+        </div>
+      </section>
+      <!-- 현행 -->
+      <section id="vCur" class="view" hidden>
+        <img class="curMap" src="assets/map.jpg" alt="" draggable="false">
+        <img class="curHandle" src="assets/sheet_handle.png" alt="" draggable="false">
+        <div class="curSheet"></div>
+        <img class="curSortNear" src="assets/sort_near.png" alt="" draggable="false">
+        <img class="curSortPop" src="assets/sort_pop.png" alt="" draggable="false">
+        <img class="curAd" src="assets/ad_tag.png" alt="" draggable="false">
+        <div class="curAdLine"></div>
+        <div id="curScroller" class="scroller"><div id="curList" class="list"></div><div style="height:140px"></div></div>
+      </section>
+      <img id="status" src="assets/status_glyphs.png" alt="" draggable="false">
+      <button id="fab" class="floating" aria-label="지도보기"><img src="assets/fab.png" alt="" draggable="false"></button>
+      <button id="segToggle" class="floating" data-toast="시설/레슨 전환(같은 헤더 구조 — 프로토타입 생략)"><img src="assets/toggle.png" alt="" draggable="false"></button>
+      <img id="tabbar" src="assets/tabbar.png" alt="" draggable="false">
+      <div id="modeSwitch" role="tablist">
+        <button data-mode="cur">현행</button><button data-mode="new">개선안(A+C)</button>
+      </div>
+      <div id="toast"></div>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
