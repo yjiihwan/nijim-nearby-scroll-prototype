@@ -30,16 +30,21 @@ const el = {
   stage: $('stage'), frame: $('frame'), scroller: $('scroller'), list: $('list'), tail: $('tailpad'),
   topCover: $('topCover'), map: $('mapImg'), mapBlock: $('mapBlock'), ex: $('exHeader'),
   adPin: $('adPin'), bar: $('bar'), barHair: $('barHair'), cats: $('cats'), catsIn: $('catsIn'), sorts: $('sorts'),
-  fab: $('fab'), seg: $('segToggle'), tabbar: $('tabbar'), toast: $('toast'),
+  fab: $('fab'), seg: $('segToggle'), tabbar: $('tabbar'), tabUnder: $('tabUnder'), toast: $('toast'),
   vNew: $('vNew'), vCur: $('vCur'), curScroller: $('curScroller'), curList: $('curList'),
 };
 
 // ---------- 레이아웃(폰=전체화면, PC=가운데 폰 프레임) ----------
 let stageH = FRAME_H;
 function layout() {
-  const vw = window.innerWidth, vh = window.innerHeight;
+  // iOS 사파리 주소창·툴바 노출에 따라 실제 보이는 높이가 바뀜 → visualViewport 우선
+  const vv = window.visualViewport;
+  const vw = window.innerWidth, vh = vv ? Math.round(vv.height) : window.innerHeight;
   const phone = vw < 600 || matchMedia('(pointer:coarse)').matches && vw < 820;
   document.body.classList.toggle('phone', phone);
+  // 지도 캡처에 상태바 글자가 박혀 있어 실기기에서 실제 상태바와 이중으로 보임 → 글자 지운 사본 사용
+  const mapSrc = phone ? 'assets/map_nostatus.jpg' : 'assets/map.jpg';
+  document.querySelectorAll('#mapImg,.curMap').forEach(i => { if (!i.src.endsWith(mapSrc)) i.src = mapSrc; });
   let scale;
   if (phone) { scale = vw / 393; stageH = vh / scale; el.frame.style.width = vw + 'px'; el.frame.style.height = vh + 'px'; }
   else { scale = Math.min(1, (vh - 40) / FRAME_H); stageH = FRAME_H; el.frame.style.width = 393 * scale + 'px'; el.frame.style.height = FRAME_H * scale + 'px'; }
@@ -47,6 +52,7 @@ function layout() {
   el.stage.style.transform = `scale(${scale})`;
   const fromBottom = (node, y, h) => { node.style.top = (stageH - (FRAME_H - y)) + 'px'; node.style.height = h + 'px'; };
   fromBottom(el.fab, 706.67, 52); fromBottom(el.seg, 705, 55.67); fromBottom(el.tabbar, 758.33, 98);
+  el.tabUnder.style.top = (stageH - (FRAME_H - 758.33 - 49)) + 'px';
   el.tail.style.height = (S.floatOverlap + D + 20) + 'px';
   if (mode === 'new') render();
 }
@@ -62,7 +68,7 @@ function renderChips() {
   el.catsIn.innerHTML = CATS.map((t, i) => `<button class="cat${i === state.cat ? ' sel' : ''}" data-cat="${i}">${t}</button>`).join('');
   el.sorts.innerHTML = SORTS.map((t, i) => `<button class="sort${i === state.sort ? ' sel' : ''}" data-sort="${i}">${t}</button>`).join('');
   const sortW = el.sorts.getBoundingClientRect().width / currentScale();
-  el.cats.style.width = (393 - 12 - sortW - 10 - 52) + 'px';
+  el.cats.style.width = (393 - 12 - sortW - 6 - 48) + 'px';
 }
 const currentScale = () => el.stage.getBoundingClientRect().width / 393;
 el.bar.addEventListener('click', e => {
@@ -308,6 +314,7 @@ function setMode(next) {
 switchBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
 
 window.addEventListener('resize', layout);
+window.visualViewport && window.visualViewport.addEventListener('resize', layout);
 setMode(location.hash === '#current' ? 'cur' : 'new');
 layout();
 document.fonts && document.fonts.ready.then(() => mode === 'new' && renderChips());
